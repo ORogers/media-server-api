@@ -1,0 +1,1 @@
+ {   "openapi": "3.0.0",   "info": {     "description": "Oliver Rogers",     "version": "1.0.0",     "title": "Media Server API",     "contact": {       "email": "oliver.rogers101@gmail.com"     },     "license": {       "name": "MIT",       "url": "https://opensource.org/licenses/MIT"     }   } }
