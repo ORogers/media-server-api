@@ -1,6 +1,6 @@
-#Media-Server-Api
+# Media-Server-Api
 
-##Setup
+## Setup
 1. Create and source a new virutal env
 ```
 python3 -m venv venv
