@@ -1,12 +1,21 @@
 from flask import Flask
 from flask_swagger_ui import get_swaggerui_blueprint
-
 from controls import SystemControls
-
 import os
+import logging
+
+'''Setup Logging'''
+logger_name = 'media-server-api'
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%d-%m %H:%M',
+                    filename='./{}.log'.format(logger_name),
+                    filemode='w')
+
+logger = logging.getLogger(logger_name)
 
 app = Flask(__name__)
-system = SystemControls()
+system = SystemControls(logger=logger_name)
 
 
 @app.route('/')
