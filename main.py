@@ -7,15 +7,16 @@ __status__ = "Development"
 
 #System Imports
 import os
-import sys
-sys.path.insert(0,'./lib')
 import json
 import logging
+import sys
+sys.path.insert(0,'./lib')
 
 #Library Imports
 from flask import Flask, request
 from flask_swagger_ui import get_swaggerui_blueprint
 from controls import SystemControls
+from api_utils import APIUtils
 
 '''
 ___  ___         _ _              _____                                  ___  ______ _____ 
@@ -40,13 +41,17 @@ logger = logging.getLogger(logger_name)
 #Initialize objects
 app = Flask(__name__)
 system = SystemControls(logger=logger_name)
+utils = APIUtils(logger=logger_name)
 
 #API routes
 @app.route('/')
 def index():
-    hostname = system.getHostname()
-    return 'This API controls the media server running on {}.'.format(hostname)
-
+    try:
+        hostname = system.getHostname()
+        message = 'This API controls the media server running on {}.'.format(hostname)
+        return utils.sendSuccess(message)
+    except Exception as e:
+        return utils.sendFailure(e)
 
 @app.route('/hostname')
 def hostname():
@@ -55,20 +60,14 @@ def hostname():
         hostname = system.getHostname()
         logger.debug('Hostname recieved: {}'.format(hostname))
         
-        logger.debug('forming re')
-
-        res = {
-            'status': 'success',
-            'response': {
-                'hostname': hostname
-            }
-        }
-
-        return (json.dumps(res), 200)
+        data = {'hostname': hostname}
+       
+        return utils.sendFailure(data)
 
     except Exception as e:
-        logger.error('Error during /hostname request: {}'.format(e))
-        return (_ , 500)
+        message = 'Error during /hostname request: {}'.format(e)
+        logger.error(message)
+        return utils.sendFailure(message)
         
 
 @app.route('/process')
