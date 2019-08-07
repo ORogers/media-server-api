@@ -49,4 +49,5 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            cd lib/tests
             nosetests test_controls.py -vv
