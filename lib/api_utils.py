@@ -47,7 +47,7 @@ class APIUtils:
         self.logger.debug('Determining data response type of {}'.format(data))
         payloadType = {
             type(None): {},
-            type('string'): {'text': data},
+            type('string'): {'message': data},
             type({}): {'data': data}
         }
         data_dict = payloadType[type(data)]
