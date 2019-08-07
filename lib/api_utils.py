@@ -26,7 +26,7 @@ class APIUtils:
         self.logger.debug('Data response type selected as {}: {}'.format(type(data), data_dict))
         
         self.logger.debug('Forming success response with data: {}'.format(data_dict))
-        base_res = {'status': 'success'}}
+        base_res = {'status': 'success'}
 
         res = {**base_res, **data_dict}
         self.logger.debug('Response formed: {}'.format(data_dict))
