@@ -14,22 +14,42 @@ class APIUtils:
     def sendSuccess(self,
                     data=None,
                     status_code=200):
-        self.logger.debug('Entered sendSuccess function command')
+        self.logger.debug('Entered sendSuccess function')
         
-        options = {
+
+        data_dict = self._selectPayloadType(data)
+        base_res = {'status': 'success'}
+
+
+        self.logger.debug('Forming success response with data: {}'.format(data_dict))
+        res = {**base_res, **data_dict}
+        self.logger.debug('Response formed: {}'.format(res))
+
+        return (json.dumps(res), status_code) 
+
+    def sendFailure(self,
+                    data=None,
+                    status_code=500):
+        self.logger.debug('Entered sendFailure function')
+
+
+        data_dict = self._selectPayloadType(data)
+        base_res = {'status': 'failure'}
+
+
+        self.logger.debug('Forming failure response with data: {}'.format(data_dict))
+        res = {**base_res, **data_dict}
+        self.logger.debug('Response formed: {}'.format(res))
+
+        return (json.dumps(res), status_code) 
+
+    def _selectPayloadType(self,data):
+        self.logger.debug('Determining data response type of {}'.format(data))
+        payloadType = {
             type(None): {},
             type('string'): {'text': data},
             type({}): {'data': data}
         }
-
-        self.logger.debug('Determining data response type of {}'.format(data))       
-        data_dict = options[type(data)]
+        data_dict = payloadType[type(data)]
         self.logger.debug('Data response type selected as {}: {}'.format(type(data), data_dict))
-        
-        self.logger.debug('Forming success response with data: {}'.format(data_dict))
-        base_res = {'status': 'success'}
-
-        res = {**base_res, **data_dict}
-        self.logger.debug('Response formed: {}'.format(data_dict))
-        
-        return (json.dumps(res), status_code) 
+        return data_dict
