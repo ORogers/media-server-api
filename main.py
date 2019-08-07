@@ -58,17 +58,17 @@ def hostname():
         logger.debug('forming re')
 
         res = {
-            'status': 'sussess',
-            'responce': {
+            'status': 'success',
+            'response': {
                 'hostname': hostname
             }
         }
 
-        return json.dumps(res)  , 500
+        return (json.dumps(res), 200)
 
     except Exception as e:
         logger.error('Error during /hostname request: {}'.format(e))
-        return _ , 500
+        return (_ , 500)
         
 
 @app.route('/process')
