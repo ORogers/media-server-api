@@ -1,4 +1,5 @@
 import sys
+import json
 sys.path.insert(0,'../')
 import unittest
 from api_utils import APIUtils
@@ -13,7 +14,7 @@ class TestController(unittest.TestCase):
             res =  self.utils.sendSuccess()
         except:
             assert False
-        target = {'status': 'success'}
+        target = (json.dumps({'status': 'success'}),200)
         self.assertEqual(res, target)
 
     def test_sendSuccess01(self):
@@ -22,7 +23,7 @@ class TestController(unittest.TestCase):
             res =  self.utils.sendSuccess(data)
         except:
             assert False
-        target = {'status': 'success', 'data': data}
+        target = (json.dumps({'status': 'success', 'data': data}),200)
         self.assertEqual(res, target)
 
 if __name__ == 'main':
