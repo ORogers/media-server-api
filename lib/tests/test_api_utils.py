@@ -34,7 +34,7 @@ class TestAPIUtils(unittest.TestCase):
         except:
             assert False
         target_dict = {'status': 'success',
-                       'text': data}
+                       'message': data}
         target = (json.dumps(target_dict),200)
         self.assertEqual(res, target)
 
@@ -62,7 +62,7 @@ class TestAPIUtils(unittest.TestCase):
         except:
             assert False
         target_dict = {'status': 'failure',
-                       'text': data}
+                       'message': data}
         target = (json.dumps(target_dict),500)
         self.assertEqual(res, target)
    
