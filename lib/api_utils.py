@@ -12,7 +12,8 @@ class APIUtils:
         self.logger = logging.getLogger(logger)
 
     def sendSuccess(self,
-                    data=None):
+                    data=None,
+                    status_code=200):
         self.logger.debug('Entered sendSuccess function command')
         
         options = {
@@ -31,4 +32,4 @@ class APIUtils:
         res = {**base_res, **data_dict}
         self.logger.debug('Response formed: {}'.format(data_dict))
         
-        return (json.dumps(res), 200) 
+        return (json.dumps(res), status_code) 
