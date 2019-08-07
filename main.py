@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_swagger_ui import get_swaggerui_blueprint
 from controls import SystemControls
 import os
@@ -27,6 +27,21 @@ def index():
 @app.route('/hostname')
 def hostname():
     return system.getHostname()
+
+@app.route('/process')
+def getProcess():
+    try:
+        logger.debug('Parsing url argument for process name')
+        process_name = request.args.get('p')
+        logger.debug('Value {} has been parsed for the value of "p"'.format(process_name))
+        if process_name ==  None:
+            raise Exception('No value of "p" passed in HTTP request.') 
+    except Exception as e:
+        logger.debug('Error finding process details: {}'.format(e))
+        return 'Error finding process details: {}'.format(e) 
+
+
+    return process_name
 
 
 @app.route('/reboot')
