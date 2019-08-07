@@ -45,11 +45,11 @@ jobs:
           command: |
             . venv/bin/activate
             cd lib/tests
-            nosetests test_controls.py -vv
+            nosetests test_controls.py -v
 
       - run:
           name: run api utils tests
           command: |
             . venv/bin/activate
             cd lib/tests
-            nosetests test_api_utils.py -vv
+            nosetests test_api_utils.py -v
