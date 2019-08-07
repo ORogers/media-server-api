@@ -79,11 +79,12 @@ def getProcess():
         if process_name ==  None:
             raise Exception('No value of "p" passed in HTTP request.') 
     except Exception as e:
-        logger.debug('Error finding process details: {}'.format(e))
-        return 'Error finding process details: {}'.format(e) 
+        message = 'Error finding process details: {}'.format(e)
+        logger.debug(message)
+        return utils.sendFailure(message)
 
 
-    return process_name
+    return utils.sendSuccess(process_name)
 
 
 @app.route('/reboot')
