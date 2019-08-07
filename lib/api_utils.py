@@ -11,9 +11,8 @@ class APIUtils:
     def __init__(self,logger):
         self.logger = logging.getLogger(logger)
 
-    def sendSuccess(self
+    def sendSuccess(self,
                     data=None):
-
         self.logger.debug('Entered sendSuccess function command')
         
         options = {
@@ -21,11 +20,7 @@ class APIUtils:
             type('string'): {'text': data},
             type({}): {'data': data}
         }
-        
-        res = {
-           'status': 'success'
-        }
-         
+
         self.logger.debug('Determining data response type of {}'.format(data))       
         data_dict = options[type(data)]
         self.logger.debug('Data response type selected as {}: {}'.format(type(data), data_dict))
