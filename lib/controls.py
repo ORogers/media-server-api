@@ -1,12 +1,18 @@
+__author__ = "Oliver Rogers"
+__version__ = "1.0.0"
+__maintainer__ = "Oliver Rogers"
+__email__ = "oliver.rogers101@gmail.com"
+__status__ = "Development"
 import os
 import logging
 import psutil
 import subprocess
+import socket
 
 class SystemControls:
     def __init__(self,logger):
         self.logger = logging.getLogger(logger)
-        self.hostname = subprocess.check_output(['hostname'])
+        self.hostname = socket.gethostname() 
 
     def getHostname(self):
         self.logger.debug('Returning hostname value: {}'.format(self.hostname))
