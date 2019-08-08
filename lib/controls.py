@@ -10,9 +10,13 @@ import subprocess
 import socket
 
 class SystemControls:
-    def __init__(self,logger):
+    def __init__(self,
+                 logger,
+                 services):
         self.logger = logging.getLogger(logger)
         self.hostname = socket.gethostname() 
+        self.services = services
+
 
     def getHostname(self):
         try:
