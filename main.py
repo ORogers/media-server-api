@@ -86,6 +86,14 @@ def get_service():
         return utils.sendFailure(message)
 
     try:
+        logger.debug('Checking service validity of: {}'.format(service_name))
+        system.checkValidService(service_name)
+        logger.debug('{} is a valid service'.format(service_name))
+    except Exception as e:
+        logger.debug(e)
+        return utils.sendFailure(str(e))  
+      
+    try:
         logger.debug('Calling function to retreive service data')
         service_data = system.getServiceDetails(service_name)
         logger.debug('Service data received: {}'.format(service_data))

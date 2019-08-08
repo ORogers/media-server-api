@@ -26,7 +26,7 @@ class SystemControls:
             message = 'Error reading hostname: {}'
             self.logger.debug(message)
             raise Exception(message)    
-  
+
     def getServiceDetails(self,service):
         self.logger.debug('Running getServiceDetails function')
         
@@ -51,7 +51,7 @@ class SystemControls:
         try:
             self.logger.debug('Forming output dict')
             service_data = {
-                'name': json_dict['Names'].strip('.service'),
+                'name': json_dict['Names'].replace('.service',''),
                 'description': json_dict['Description'],
                 'status': json_dict['ActiveState']
             }
@@ -63,6 +63,11 @@ class SystemControls:
 
         return service_data
 
+    def checkValidService(self,service):
+            if service in self.services:
+                return True
+            else:
+                raise Exception('Invalid Service: {} is not in the list of valid services'.format(service))
 
     def reboot(self):
         self.logger.debug('Running reboot command')
