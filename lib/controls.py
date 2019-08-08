@@ -27,23 +27,16 @@ class SystemControls:
         stout, _ = ps_out.communicate()
         print(stout)
  
-    def find_procs_by_name(self,name):
-        "Return a list of processes matching 'name'."
-        assert name, name
-        ls = []
-        for p in psutil.process_iter():
-            name_, exe, cmdline = "", "", []
-            try:
-                name_ = p.name()
-                cmdline = p.cmdline()
-                exe = p.exe()
-            except (psutil.AccessDenied, psutil.ZombieProcess):
-                pass
-            except psutil.NoSuchProcess:
-                continue
-            if name == name_ or cmdline[0] == name or os.path.basename(exe) == name:
-                ls.append(name)
-        return ls
+    def getServiceDetails(self,service):
+        key_value = subprocess.check_output(["systemctl", "show", service], universal_newlines=True).split('\n')
+        json_dict = {}
+        for entry in key_value:
+            kv = entry.split("=", 1)
+            if len(kv) == 2:
+                json_dict[kv[0]] = kv[1]
+        return json_dict
+
+
     def reboot(self):
         self.logger.debug('Running reboot command')
         os.system('reboot')
