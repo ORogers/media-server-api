@@ -70,21 +70,29 @@ def hostname():
         return utils.sendFailure(message)
         
 
-@app.route('/process')
-def getProcess():
+@app.route('/service')
+def getService():
     try:
-        logger.debug('Parsing url argument for process name')
-        process_name = request.args.get('p')
-        logger.debug('Value {} has been parsed for the value of "p"'.format(process_name))
-        if process_name ==  None:
-            raise Exception('No value of "p" passed in HTTP request.') 
+        logger.debug('Parsing url argument for service name')
+        service_name = request.args.get('name')
+        logger.debug('Value {} has been parsed for the value of "name"'.format(service_name))
+        if service_name ==  None:
+            raise Exception('No value of "name" passed in HTTP request.') 
     except Exception as e:
-        message = 'Error finding process details: {}'.format(e)
+        message = 'Error parsing url, missing "name" value: {}'.format(e)
         logger.debug(message)
         return utils.sendFailure(message)
 
+    try:
+        logger.debug('Calling function to retreive service data')
+        service_data = system.getServiceDetails(service_name)
+        logger.debug('Service data received: {}'.format(service_data))
+    except Exception as e:
+        message = 'Error retreiving service data: {}'.format(e)
+        logger.debug(message)
+        return utils.sendFailure(message)
 
-    return utils.sendSuccess(process_name)
+    return utils.sendSuccess(service_data)
 
 
 @app.route('/reboot')
