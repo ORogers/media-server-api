@@ -6,6 +6,7 @@ __status__ = "Development"
 
 import logging
 import json
+import yaml
 
 class APIUtils:
     def __init__(self,logger):
@@ -53,3 +54,14 @@ class APIUtils:
         data_dict = payloadType[type(data)]
         self.logger.debug('Data response type selected as {}: {}'.format(type(data), data_dict))
         return data_dict
+
+    def loadConfig(self,path):
+        self.logger.debug('Running loadConfig function for {}'.format(path))
+        with open(path, 'r') as stream:
+            try:
+                config = yaml.safe_load(stream)
+            except yaml.YAMLError as e:
+                raise Exception(e)
+
+        return config
+
