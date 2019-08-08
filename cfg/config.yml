@@ -3,5 +3,6 @@ services:
   - deluged
   - deluge-web
   - plexmediaserver
+  - media-server-api
 ...  
   
