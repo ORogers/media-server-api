@@ -15,26 +15,49 @@ class SystemControls:
         self.hostname = socket.gethostname() 
 
     def getHostname(self):
-        self.logger.debug('Returning hostname value: {}'.format(self.hostname))
-        return self.hostname
-
-    def checkProcess(self,process_name):
-        self.logger.debug('Running checkProcess function for {}'.format(process_name))
-        command = 'ps -ef | grep {}'.format(process_name)
-        ps_out = subprocess.Popen(command,
-                                  shell=True,
-                                  stdout=subprocess.PIPE)
-        stout, _ = ps_out.communicate()
-        print(stout)
- 
+        try:
+            self.logger.debug('Returning hostname value: {}'.format(self.hostname))
+            return self.hostname
+        except Exception as e:
+            message = 'Error reading hostname: {}'
+            self.logger.debug(message)
+            raise Exception(message)    
+  
     def getServiceDetails(self,service):
-        key_value = subprocess.check_output(["systemctl", "show", service], universal_newlines=True).split('\n')
-        json_dict = {}
-        for entry in key_value:
-            kv = entry.split("=", 1)
-            if len(kv) == 2:
-                json_dict[kv[0]] = kv[1]
-        return json_dict
+        self.logger.debug('Running getServiceDetails function')
+        
+        try:
+            self.logger.debug('Attempting to read service details dict for {}'.format(service))
+            key_value = subprocess.check_output(["systemctl", "show", service], universal_newlines=True).split('\n')
+            
+            json_dict = {}
+            for entry in key_value:
+                kv = entry.split("=", 1)
+                if len(kv) == 2:
+                    json_dict[kv[0]] = kv[1]
+
+            self.logger.debug('full service data: {}'.format(json_dict))
+            if json_dict.get('UnitFilePreset') == None:
+                raise Exception("Service '{}' not found".format(service))
+    
+        except Exception as e:
+            self.logger.debug('Error finding service details: {}'.format(e))
+            raise Exception(e)
+
+        try:
+            self.logger.debug('Forming output dict')
+            service_data = {
+                'name': json_dict['Names'].strip('.service'),
+                'description': json_dict['Description'],
+                'status': json_dict['ActiveState']
+            }
+            self.logger.debug('Response dict: {}'.format(service_data))
+        except Exception as e:
+            message = 'Error forming response json: {}'.format(e)
+            self.logger.error(message)
+            raise Exception(e)
+
+        return service_data
 
 
     def reboot(self):
