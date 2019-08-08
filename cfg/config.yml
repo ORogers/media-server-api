@@ -1,0 +1,7 @@
+--- 
+services: 
+  - deluged
+  - deluge-web
+  - plexmediaserver
+...  
+  
