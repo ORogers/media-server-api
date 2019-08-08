@@ -7,6 +7,7 @@ class TestController(unittest.TestCase):
 
     def setUp(self):
         self.system = SystemControls('test')
+        self.service_keys = set(('name', 'description', 'status', 'reload_policy'))
 
     def test_getHostname(self):
         try:
@@ -15,27 +16,51 @@ class TestController(unittest.TestCase):
         except:
             assert False
 
-    def test_checkProcess(self):
+    def test_getServiceDetails(self):
         try:
-           self.system.checkProcess('deluge')
-           assert True
+           res = self.system.getServiceDetails('deluge')
+           assert self.service_keys.issubset(res)
         except:
            assert False
 
-    def test_checkProcess01(self):
+    def test_getServiceDetails01(self):
         try:
-           self.system.checkProcess('deluge-web')
-           assert True
+           self.system.getServiceDetails('deluge-web')
+           assert self.service_keys.issubset(res)
         except:
            assert False
 
-    def test_checkProcess02(self):
+    def test_getServiceDetails02(self):
         try:
-           self.system.checkProcess('Plex Media Server')
-           assert True
+           self.system.getServiceDetails('plex')
+           assert self.service_keys.issubset(res)
         except:
            assert False
 
+    def test_getServiceDetails03(self):
+        #Should throw exception
+        try:
+           self.system.getServiceDetails('pleeex')
+           assert not self.service_keys.issubset(res)
+        except:
+           assert True
+
+    def test_getServiceDetails04(self):
+        #Should throw exception
+        try:
+           self.system.getServiceDetails('padegrareae././ws\leeex')
+           assert not self.service_keys.issubset(res)
+        except:
+           assert True
+
+
+    def test_getServices(self):
+        try:
+            services = self.system.getServices()
+            assert  True
+        except:
+            assert False
 
 if __name__ == 'main':
     unittest.main()
+
