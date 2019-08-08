@@ -34,7 +34,6 @@ logging.basicConfig(level=logging.DEBUG,
                     filemode='w')
 
 logger = logging.getLogger(logger_name)
-#Finished Logging setup
 
 #Initialize objects
 app = Flask(__name__)
@@ -45,7 +44,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 config = utils.loadConfig(dir_path+'/cfg/config.yml')
 
 system = SystemControls(logger=logger_name,
-                        services=config.services)
+                        services=config['services'])
 #API routes
 @app.route('/')
 def index():
