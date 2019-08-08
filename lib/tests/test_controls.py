@@ -6,7 +6,10 @@ from controls import SystemControls
 class TestController(unittest.TestCase):
 
     def setUp(self):
-        self.system = SystemControls('test')
+        self.services = ['deluged', 'deluge-web', 'plexmediaserver']
+        self.system = SystemControls(logger='test',
+                                     services=self.services)
+
         self.service_keys = ['name', 'description', 'status']
 
     def test_getHostname(self):
