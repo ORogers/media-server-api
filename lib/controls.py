@@ -18,6 +18,7 @@ class SystemControls:
         self.services = services
 
 
+
     def getHostname(self):
         try:
             self.logger.debug('Returning hostname value: {}'.format(self.hostname))
@@ -67,6 +68,11 @@ class SystemControls:
     def reboot(self):
         self.logger.debug('Running reboot command')
         os.system('reboot')
+
+    def getServices(self):
+        self.logger.debug('Running getServices function')
+        self.logger.debug('Returning service list: {}'.format(self.services))
+        return self.services
 
 
 #sc = SystemControls('media-server-api')

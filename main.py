@@ -73,7 +73,7 @@ def hostname():
         
 
 @app.route('/service')
-def getService():
+def get_service():
     try:
         logger.debug('Parsing url argument for service name')
         service_name = request.args.get('name')
@@ -96,6 +96,21 @@ def getService():
 
     return utils.sendSuccess(service_data)
 
+@app.route('/services')
+def get_services():
+    try:
+        logger.debug('Calling getServices function')
+        services = system.getServices()
+        logger.debug('Services received: {}'.format(services))
+
+        data = {'services': services}
+
+        return utils.sendSuccess(data)
+
+    except Exception as e:
+        message = 'Error during /services request: {}'.format(e)
+        logger.error(message)
+        return utils.sendFailure(message)
 
 @app.route('/reboot')
 @app.route('/restart')
