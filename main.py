@@ -4,10 +4,17 @@ __maintainer__ = "Oliver Rogers"
 __email__ = "oliver.rogers101@gmail.com"
 __status__ = "Development"
 
+'''
+___  ___         _ _              _____                                  ___  ______ _____ 
+|  \/  |        | (_)            /  ___|                                / _ \ | ___ \_   _|
+| .  . | ___  __| |_  __ _ ______\ `--.  ___ _ ____   _____ _ __ ______/ /_\ \| |_/ / | |  
+| |\/| |/ _ \/ _` | |/ _` |______|`--. \/ _ \ '__\ \ / / _ \ '__|______|  _  ||  __/  | |  
+| |  | |  __/ (_| | | (_| |      /\__/ /  __/ |   \ V /  __/ |         | | | || |    _| |_ 
+\_|  |_/\___|\__,_|_|\__,_|      \____/ \___|_|    \_/ \___|_|         \_| |_/\_|    \___/ 
+'''
 
 #System Imports
 import os
-import json
 import logging
 import sys
 sys.path.insert(0,'./lib')
@@ -18,15 +25,6 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from controls import SystemControls
 from api_utils import APIUtils
 
-'''
-___  ___         _ _              _____                                  ___  ______ _____ 
-|  \/  |        | (_)            /  ___|                                / _ \ | ___ \_   _|
-| .  . | ___  __| |_  __ _ ______\ `--.  ___ _ ____   _____ _ __ ______/ /_\ \| |_/ / | |  
-| |\/| |/ _ \/ _` | |/ _` |______|`--. \/ _ \ '__\ \ / / _ \ '__|______|  _  ||  __/  | |  
-| |  | |  __/ (_| | | (_| |      /\__/ /  __/ |   \ V /  __/ |         | | | || |    _| |_ 
-\_|  |_/\___|\__,_|_|\__,_|      \____/ \___|_|    \_/ \___|_|         \_| |_/\_|    \___/ 
-'''
-  
 #Setup Logging
 logger_name = 'media-server-api'
 logging.basicConfig(level=logging.DEBUG,
@@ -40,9 +38,14 @@ logger = logging.getLogger(logger_name)
 
 #Initialize objects
 app = Flask(__name__)
-system = SystemControls(logger=logger_name)
 utils = APIUtils(logger=logger_name)
 
+#Loading config
+dir_path = os.path.dirname(os.path.realpath(__file__))
+config = utils.loadConfig(dir_path+'/cfg/config.yml')
+
+system = SystemControls(logger=logger_name,
+                        services=config.services)
 #API routes
 @app.route('/')
 def index():
