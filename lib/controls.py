@@ -5,7 +5,6 @@ __email__ = "oliver.rogers101@gmail.com"
 __status__ = "Development"
 import os
 import logging
-import psutil
 import subprocess
 import socket
 
