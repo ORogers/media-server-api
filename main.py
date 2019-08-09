@@ -43,7 +43,6 @@ utils = APIUtils(logger=logger_name)
 #Loading config
 dir_path = os.path.dirname(os.path.realpath(__file__))
 config = utils.loadConfig(dir_path+'/cfg/config.yml')
-print(config['auth'])
 system = SystemControls(logger=logger_name,
                         services=config['services'])
 
