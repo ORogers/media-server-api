@@ -21,6 +21,7 @@ sys.path.insert(0,'./lib')
 
 #Library Imports
 from flask import Flask, request
+from flask_basicauth import BasicAuth
 from flask_swagger_ui import get_swaggerui_blueprint
 from controls import SystemControls
 from api_utils import APIUtils
@@ -28,7 +29,7 @@ from api_utils import APIUtils
 #Setup Logging
 logger_name = 'media-server-api'
 logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    format='%(asctime)s.%(msecs)03d %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%d-%m %H:%M',
                     filename='./{}.log'.format(logger_name),
                     filemode='w')
@@ -42,9 +43,16 @@ utils = APIUtils(logger=logger_name)
 #Loading config
 dir_path = os.path.dirname(os.path.realpath(__file__))
 config = utils.loadConfig(dir_path+'/cfg/config.yml')
-
+print(config['auth'])
 system = SystemControls(logger=logger_name,
                         services=config['services'])
+
+#Setup auth
+app.config['BASIC_AUTH_USERNAME'] = config['auth']['user']
+app.config['BASIC_AUTH_PASSWORD'] = config['auth']['pass']
+app.config['BASIC_AUTH_FORCE'] = True
+auth = BasicAuth(app)
+
 #API routes
 @app.route('/')
 def index():
@@ -64,7 +72,7 @@ def hostname():
         
         data = {'hostname': hostname}
        
-        return utils.sendFailure(data)
+        return utils.sendSuccess(data)
 
     except Exception as e:
         message = 'Error during /hostname request: {}'.format(e)

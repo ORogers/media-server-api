@@ -4,5 +4,9 @@ services:
   - deluge-web
   - plexmediaserver
   - media-server-api
+
+auth:
+  user: media
+  pass: server
 ...  
   
