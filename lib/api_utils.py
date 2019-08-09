@@ -7,6 +7,7 @@ __status__ = "Development"
 import logging
 import json
 import yaml
+from flask import Response
 
 class APIUtils:
     def __init__(self,logger):
@@ -25,8 +26,14 @@ class APIUtils:
         self.logger.debug('Forming success response with data: {}'.format(data_dict))
         res = {**base_res, **data_dict}
         self.logger.debug('Response formed: {}'.format(res))
-
-        return (json.dumps(res), status_code) 
+        
+        self.logger.debug('Creating response object')
+        res = Response(response=json.dumps(res),
+                       status=status_code,
+                       content_type='application/json')
+        self.logger.debug('Response object created')
+ 
+        return res
 
     def sendFailure(self,
                     data=None,
@@ -42,7 +49,13 @@ class APIUtils:
         res = {**base_res, **data_dict}
         self.logger.debug('Response formed: {}'.format(res))
 
-        return (json.dumps(res), status_code) 
+        self.logger.debug('Creating response object')
+        res = Response(response=json.dumps(res),
+                       status=status_code,
+                       content_type='application/json')
+        self.logger.debug('Response object created')
+
+        return res
 
     def _selectPayloadType(self,data):
         self.logger.debug('Determining data response type of {}'.format(data))
