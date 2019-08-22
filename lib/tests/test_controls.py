@@ -64,6 +64,28 @@ class TestController(unittest.TestCase):
         except:
             assert False
 
+    def test_stopService(self):
+        try:
+            self.system.stopService('media-server-api')
+            assert True
+        except:
+            assert False
+
+    def test_startService(self):
+        try:
+            self.system.startService('media-server-api')
+            assert True
+        except: 
+            assert False
+
+    def test_restartService(self):
+        try:
+            self.system.restartService('media-server-api')
+            assert True
+        except:
+            assert False
+
+
 if __name__ == 'main':
     unittest.main()
 
