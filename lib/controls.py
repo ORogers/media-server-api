@@ -53,7 +53,7 @@ class SystemControls:
             service_data = {
                 'name': json_dict['Names'].replace('.service',''),
                 'description': json_dict['Description'],
-                'status': json_dict['ActiveState']
+                'active': json_dict['ActiveState'] == 'active'  
             }
             self.logger.debug('Response dict: {}'.format(service_data))
         except Exception as e:

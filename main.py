@@ -50,7 +50,7 @@ system = SystemControls(logger=logger_name,
 app.config['BASIC_AUTH_USERNAME'] = config['auth']['user']
 app.config['BASIC_AUTH_PASSWORD'] = config['auth']['pass']
 app.config['BASIC_AUTH_FORCE'] = True
-auth = BasicAuth(app)
+#auth = BasicAuth(app)
 
 #API routes
 @app.route('/')
@@ -79,26 +79,15 @@ def hostname():
         return utils.sendFailure(message)
         
 
-@app.route('/service')
-def get_service():
-    try:
-        logger.debug('Parsing url argument for service name')
-        service_name = request.args.get('name')
-        logger.debug('Value {} has been parsed for the value of "name"'.format(service_name))
-        if service_name ==  None:
-            raise Exception('No value of "name" passed in HTTP request.') 
-    except Exception as e:
-        message = 'Error parsing url, missing "name" value: {}'.format(e)
-        logger.debug(message)
-        return utils.sendFailure(message)
-
+@app.route('/service/<service_name>', methods = ['GET'])
+def get_service(service_name):
     try:
         logger.debug('Checking service validity of: {}'.format(service_name))
         system.checkValidService(service_name)
         logger.debug('{} is a valid service'.format(service_name))
     except Exception as e:
         logger.debug(e)
-        return utils.sendFailure(str(e))  
+        return utils.sendFailure(str(e),400)  
       
     try:
         logger.debug('Calling function to retreive service data')
