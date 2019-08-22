@@ -67,7 +67,32 @@ class SystemControls:
             if service in self.services:
                 return True
             else:
+
                 raise Exception('Invalid Service: {} is not in the list of valid services'.format(service))
+
+    def stopService(self,service):
+        try:
+            self.logger.debug('Running stopService function for service "{}"'.format(service))
+            subprocess.check_call(['service',service,'stop'])
+            return True
+        except Exception as e:
+            self.logger.error('Error stopping service: {}'.format(e))         
+
+    def startService(self,service):
+        try:
+            self.logger.debug('Running stopService function for service "{}"'.format(service))
+            subprocess.check_call(['service',service,'stop'])
+            return True
+        except Exception as e:
+            self.logger.error('Error stopping service: {}'.format(e))
+        
+    def restartService(self,service):
+        try:
+            self.logger.debug('Running stopService function for service "{}"'.format(service))
+            subprocess.check_call(['service',service,'stop'])
+            return True
+        except Exception as e:
+            self.logger.error('Error stopping service: {}'.format(e))
 
     def reboot(self):
         self.logger.debug('Running reboot command')
@@ -78,7 +103,3 @@ class SystemControls:
         self.logger.debug('Returning service list: {}'.format(self.services))
         return self.services
 
-
-#sc = SystemControls('media-server-api')
-#sc.find_procs_by_name('deluge')
-#print(sc)
