@@ -15,4 +15,5 @@ jobs:
     - name: Runs Tests
       run: |
         cd lib/tests
-        nosetests -v test_controls.py
+        python test_api_utils.py
+        python test_controls.py
